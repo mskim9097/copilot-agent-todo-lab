@@ -17,10 +17,22 @@ function showStorageMessage(message) {
 function loadTasks() {
   try {
     const storedTasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    if (!Array.isArray(storedTasks) || storedTasks.some(text => typeof text !== "string")) {
+    if (!Array.isArray(storedTasks)) {
       throw new Error("Unrecognized task data");
     }
-    return storedTasks.map(text => ({ text, completed: false }));
+    return storedTasks.map(task => {
+      if (typeof task === "string") {
+        return { text: task, completed: false };
+      }
+      if (
+        task &&
+        typeof task.text === "string" &&
+        typeof task.completed === "boolean"
+      ) {
+        return task;
+      }
+      throw new Error("Unrecognized task data");
+    });
   } catch (error) {
     showStorageMessage("Saved tasks could not be loaded. Check that browser storage is available for this file.");
     return [];
@@ -30,7 +42,7 @@ function loadTasks() {
 function saveTasks() {
   try {
     // Keep this application's saved list separate from other browser data.
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks.map(task => task.text)));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
     storageStatus.hidden = true;
   } catch (error) {
     showStorageMessage("Tasks are available for this session, but could not be saved. Check your browser storage settings.");
@@ -74,6 +86,10 @@ function renderTasks() {
 
 taskForm.addEventListener("submit", event => {
   event.preventDefault();
+  if (!taskInput.value.trim()) {
+    taskInput.focus();
+    return;
+  }
   tasks.push({ text: taskInput.value, completed: false });
   saveTasks();
   renderTasks();
