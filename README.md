@@ -29,10 +29,10 @@ copilot-agent-todo-lab/
 
 ## Lab challenge
 
-This starter intentionally contains exactly two functional defects:
+This starter contains two functional defects to correct:
 
-- Completed status is lost after refreshing, although task descriptions remain.
-- Empty and whitespace-only tasks are accepted.
+- Completed status should persist after refreshing, along with task descriptions.
+- Empty and whitespace-only tasks should be rejected.
 
 Use GitHub Copilot Cloud Agent to investigate and correct these problems. Describe the expected behavior in your prompts, inspect the proposed changes, and test the application before accepting them.
 
@@ -43,8 +43,8 @@ Use a fresh browser profile or a new copy of the project in a different folder i
 - Open `index.html` directly and confirm the layout and empty state display correctly.
 - Add “Review COMP 4976 notes” using the button, then add another description using Enter. Both appear immediately and the counter increases.
 - Check and uncheck a task. Its checkbox and strikethrough styling should update together.
-- Mark a task complete, then refresh. **Expected starter defect:** the description remains, but the task becomes incomplete. Repeat with multiple tasks.
-- Submit an empty input, several spaces, and other whitespace pasted into the text field (for example, a tab). **Expected starter defect:** each produces a visible blank row with a checkbox and increments the counter. These rows also survive refresh.
+- Mark a task complete, then refresh. The task should remain completed. Repeat with multiple tasks.
+- Submit an empty input, several spaces, and other whitespace pasted into the text field (for example, a tab). No blank row should be added and the counter should not increase.
 - Enter text containing `<b>example</b>`. It should appear literally, without HTML formatting.
 - Navigate with Tab, submit with Enter, and toggle a focused checkbox with Space. Check visible focus indicators.
 - Resize to a narrow mobile viewport. Confirm the input, button, and long task descriptions fit without horizontal scrolling.
